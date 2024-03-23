@@ -11,7 +11,7 @@
 
 
 @section('content')
-
+<div style="overflow-x:auto;">
     <table class="table table-striped">
         <thead>
         <tr>
@@ -74,7 +74,7 @@
         @endforeach
         </tbody>
     </table>
-
+</div>
 @endsection
 
 @section('scripts')
