@@ -8,9 +8,9 @@ class IndexController
 {
     public function index()
     {
-echo'admin.index controller';
-//        $user = Auth::user();
-//
-//        return view('admin.index', compact('user'));
+        echo 'admin.index controller';
+        $user = Auth::user();
+
+        return view('admin.index', compact('user'));
     }
 }

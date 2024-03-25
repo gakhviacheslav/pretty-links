@@ -18,6 +18,7 @@ class Link extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function calculateStatus()
     {
         if ($this->expired_at && Carbon::now('GMT+2')->gt($this->expired_at)) {
@@ -31,6 +32,7 @@ class Link extends Model
             return 'expired';
         }
     }
+
     public function incrementViews()
     {
         $this->increment('views');
