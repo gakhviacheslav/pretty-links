@@ -10,7 +10,7 @@ class RedirectedController extends Controller
 {
     public function index(String $token)
     {
-         $link = Link::where('token', $token)->first();
+         $link = Link::where('token', $token)->firstOrFail();
             $link->status = $link->calculateStatus();
         if($link->status =='active'){
             $link->incrementViews();
