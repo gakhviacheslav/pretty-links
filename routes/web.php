@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('pretty/{token}', [\App\Http\Controllers\RedirectedController::class, 'index'])->name('redirect.show');
+Route::get('pretty/{token}', [\App\Http\Controllers\RedirectedController::class, 'show'])->name('redirect.show');
 
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
 

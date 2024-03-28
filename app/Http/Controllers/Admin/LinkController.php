@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Link\StoreRequest;
-use App\Http\Requests\Admin\Link\UpdateRequest;
 use App\Models\Link;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +16,13 @@ class LinkController extends Controller
      */
     public function index()
     {
-        $current_user = Auth::user();
-        $links = Link::where('user_id', $current_user->id)->get();
+        $links = Link::where('user_id', Auth::id())->get();
+
         $links->transform(function ($link) {
             $link->status = $link->calculateStatus();
             return $link;
         });
+
         return view('admin.link.index', compact('links'));
     }
 
@@ -41,7 +41,7 @@ class LinkController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = Auth::id();
-        $data['expired_at'] = Carbon::now('GMT+2')->addHours(substr($data['expired_at'], 0, 2))
+        $data['expired_at'] = Carbon::now()->addHours(substr($data['expired_at'], 0, 2))
             ->addMinutes(substr($data['expired_at'], 3, 2))
             ->addSeconds(substr($data['expired_at'], 6, 2))
             ->format('Y-m-d H:i:s');
@@ -75,9 +75,9 @@ class LinkController extends Controller
         if (Auth::id() != $link->user_id) {
             return redirect()->route('admin.link.index');
         }
-        $date = Carbon::parse($link->expired_at, 'GMT+2');
+        $date = Carbon::parse($link->expired_at, );
 
-        $currentDateTime = Carbon::now('GMT+2');
+        $currentDateTime = Carbon::now();
 
         if ($date->gt($currentDateTime)) {
             $differenceInSeconds = $date->diffInSeconds($currentDateTime);
@@ -92,10 +92,10 @@ class LinkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Link $link)
+    public function update(StoreRequest $request, Link $link)
     {
         $data = $request->validated();
-        $data['expired_at'] = Carbon::now('GMT+2')->addHours(substr($data['expired_at'], 0, 2))
+        $data['expired_at'] = Carbon::now()->addHours(substr($data['expired_at'], 0, 2))
             ->addMinutes(substr($data['expired_at'], 3, 2))
             ->addSeconds(substr($data['expired_at'], 6, 2))
             ->format('Y-m-d H:i:s');
